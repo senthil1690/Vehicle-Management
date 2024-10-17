@@ -1,0 +1,93 @@
+<header class="d-flex align-items-center p-3 text-bg-dark">
+  <h5>Vehicle Management</h5>
+  <div class="ms-auto d-flex align-items-center">
+    <button
+      *ngIf="!showForm"
+      class="btn btn-light"
+      id="addnew"
+      (click)="onAdd()"
+    >
+      Add New
+    </button>
+    <button
+      *ngIf="showForm"
+      class="btn btn-light"
+      id="addnew"
+      (click)="onBack()"
+    >
+      Back
+    </button>
+  </div>
+</header>
+
+<main *ngIf="!showForm" class="d-flex flex-column p-3">
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row gx-3">
+        <div class="col-12 col-lg-4">
+          <label for="vehicle">Vehicle</label>
+          <input
+            type="text"
+            id="vehicle"
+            class="form-control"
+            placeholder="Search"
+          />
+          <style>
+            ::placeholder {
+              color: #aaa;
+              opacity: 1;
+            }
+          </style>
+        </div>
+
+        <div class="col-12 d-flex align-items-center mt-3">
+          <button id="refresh" class="btn btn-success mb-3" (click)="refresh()">
+            Refresh
+          </button>
+          <button id="Reset" class="ms-auto btn btn-light me-2" >Reset</button>
+          <button id="Reset" class="btn btn-primary" (click)="search()"> Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <p-table [columns]="dataCols" [value]="data">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-rowData
+        let-columns="columns"
+        let-ri="rowIndex"
+      >
+        <tr (dblclick)="onEdit(ri)">
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td>
+            <div class="d-flex align-items-center">
+              <button id="delete" class="btn btn-danger" (click)="onDelete(ri)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns="columns">
+        <tr class="emptymessage">
+          <td colspan="6">
+            <div class="alert alert-warning p-2">No records found</div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</main>
+
+<app-form *ngIf="showForm" (showForm) = "onShowForm()" [model]="model"></app-form>
