@@ -8,18 +8,19 @@ import { FormService } from './form.service';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit  {
+export class FormComponent implements OnInit {
 
   @Input() model: Vehicle = new Vehicle;
-@Output() showForm = new EventEmitter<boolean>();
+  @Output() showForm = new EventEmitter<boolean>();
 
-  
-  
 
-  constructor(private http: FormService) {}
+
+  alertMsg: any;
+
+  constructor(private http: FormService) { }
 
   ngOnInit(): void {
-    
+
     console.log('ViewvehicleComponent initialized');
   }
 
@@ -28,13 +29,14 @@ export class FormComponent implements OnInit  {
       console.error('All fields are required!');
       return;
     }
-  
+
     console.log('Model to be sent:', this.model);
     this.http.addVehicle(this.model)
       .subscribe({
         next: (response) => {
-          console.log('Vehicle saved successfully', response);
-          this.reset ();
+          // console.log('Vehicle saved successfully', response);
+          this.alertMsg = "Vehicle saved successfully"
+          this.reset();
           this.showForm.emit(false);
         },
         error: (error) => {
@@ -44,14 +46,14 @@ export class FormComponent implements OnInit  {
   }
 
 
-  reset(){
+  reset() {
     this.model = new Vehicle;
   }
-  
-  }
+
+}
 
 
 
 
-  
+
 
